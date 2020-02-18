@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Tratamiento</title>
+        <!-- MDB icon -->
+        <link rel="icon" href="lotus.png" type="image/x-icon">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+        <!-- Google Fonts Roboto -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <!-- Material Design Bootstrap -->
+        <link rel="stylesheet" href="css/mdb.min.css">
+        <!-- Your custom styles (optional) -->
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+
+        <div id="app">
+            <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <p>Tratamientos</p>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <button class="btn btn-danger" onclick="cerrarSesion()">Cerrar Sesión</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="container-fluid m-4">
+            <form onsubmit="manejarSubmit()">
+                <input type="hidden" id="idTratamiento">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" aria-describedby="nombreHelp" placeholder="Exfoliación facial">
+                    <small id="nombreHelp" class="form-text text-muted">Nombre del tratamiento.</small>
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Descripción</label>
+                    <input type="text" class="form-control" id="descripcion" aria-describedby="descripcionHelp" placeholder="liminación de las células muertas de la piel facial">
+                    <small id="descripcionHelp" class="form-text text-muted">Explicación del tratamiento</small>
+                </div>
+                <div class="form-group">
+                    <label for="costo">Costo</label>
+                    <input type="text" class="form-control" id="costo" aria-describedby="costoHelp" placeholder="123.45">
+                    <small id="descripcionHelp" class="form-text text-muted">Costo del producto.</small>
+                </div>
+
+                <button type="button" class="btn btn-primary" onclick="realizarSubmit()" id="submit">Realizar</button>
+            </form>
+        </div>
+
+
+        <!-- jQuery -->
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <!-- Bootstrap tooltips -->
+        <script type="text/javascript" src="js/popper.min.js"></script>
+        <!-- Bootstrap core JavaScript -->
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <!-- MDB core JavaScript -->
+        <script type="text/javascript" src="js/mdb.min.js"></script>
+        <!-- Scripts del sitio -->
+        <script type="text/javascript" src="js/common.js"></script>
+        <!-- Your custom scripts (optional) -->
+        <script type="text/javascript">
+                    $(document).ready(function () {
+                        
+                        verificarSesion();
+
+                        // Verifica si se quiere editar, en vez de dar de alta
+                        verificarEditar();
+                    });
+
+                    function verificarEditar() {
+                        var token = localStorage.getItem("token");
+                        var idTratamiento = localStorage.getItem("idTratamiento");
+
+                        console.log(token);
+                        console.log(idTratamiento);
+
+                        if (idTratamiento != null)
+                        {
+                            $.ajax({
+                                type: 'POST',
+                                url: 'api/tratamiento/unique',
+                                data: {
+                                    idTratamiento: idTratamiento,
+                                    token: token
+                                }
+                            }).done(function (data) {
+                                if (data.error != null)
+                                {
+                                    alert("Problema de autenticación \n" + data.error);
+                                    return;
+                                }
+
+                                console.log(data);
+
+                                $("#idTratamiento").val(data.idTratamiento);
+                                $("#nombre").val(data.nombre);
+                                $("#descripcion").val(data.descripcion);
+                                $("#costo").val(data.costo);
+
+                            }).fail(function (data) {
+                                alert("falló");
+                            });
+                        }
+                    } // Termina function de verificación editar
+
+                    function realizarSubmit() {
+                        console.log("realizar submit");
+                        var idTratamiento = document.getElementById("idTratamiento").value;
+                        var nombre = document.getElementById("nombre").value;
+                        var descripcion = document.getElementById("descripcion").value;
+                        var costo = document.getElementById("costo").value;
+
+                        var token = localStorage.getItem("token");
+
+                        var url;
+                        var verbo;
+
+                        if (localStorage.getItem("idTratamiento") != null)
+                        {
+                            url = "api/tratamiento/modificar";
+                            verbo = "PUT";
+                        } else {
+                            url = "api/tratamiento/registrar";
+                            verbo = "POST";
+                        }
+
+                        console.log("verbo: " + verbo);
+                        console.log("url " + url);
+
+                        $.ajax({
+                            type: verbo,
+                            url: url,
+                            data: {
+                                idTratamiento: idTratamiento,
+                                nombre: nombre,
+                                descripcion: descripcion,
+                                costo: costo,
+                                token: token
+                            }
+                        }).done(function (data) {
+                            if (data.error != null)
+                            {
+                                alert("Problema de autenticación \n" + data.error);
+                                return;
+                            }
+
+                            console.log(data);
+
+                            alert("Acción realizada con exito");
+                            localStorage.removeItem("idTratamiento");
+                            window.location.replace("tratamiento.html");
+
+                        }).fail(function (data) {
+                            alert("falló");
+                        });
+
+                    } // termina function de realizarSubmit
+        </script>
+
+    </body>
+</html>

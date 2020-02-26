@@ -96,6 +96,75 @@ function listar()
     });
 }
 
+function listarReservaciones()
+{
+//    var token = localStorage.getItem("token");
+//    console.log("token: " + token);
+    $.ajax({
+        type: 'GET',
+        url: 'api/reservacion/getAll'
+    }).done(function (data) {
+        if (data.error != null)
+        {
+            alert("Problema de autenticación \n" + data.error);
+            return;
+        }
+
+        console.log(data);
+
+        // Eliminar las filas que ya estan en la tabla
+        $('#tablePreview tbody tr').slice(1).remove();
+
+        $.each(data, function (i, item) {
+
+            var html;
+
+            if (item.estatus !== 0) {
+                
+                var fechaR;
+                var horaI;
+                var horaF;
+
+                if (item.fechaHoraInicio) {
+                    var fechaJSON = JSON.parse(item);
+                    var fecha = new Date(fechaJSON);
+
+                    var mes = fecha.getMonth();
+                    var dia = fecha.getDay();
+                    var anio = fecha.getYear();
+
+                    fechaR = dia + "/" + mes + "/" + anio;
+                    horaI = fecha.getTime();
+                }
+
+                if (item.fechaHoraFin) {
+                    var fechaJSON = JSON.parse(item);
+                    var fecha = new Date(fechaJSON);
+                    
+                    horaF = fecha.getTime();
+                }
+
+
+                html = "<tr>" +
+                        "<th scope=\"row\">" + fechaR + "</th>" +
+                        "<td>" + horaI + "</td>" +
+                        "<td>" + horaF + "</td>" +
+                        "<td>" + item.cliente + "</td>" +
+                        "<td>" + item.sala + "</td>" +
+                        "</tr>";
+
+                //$("#prueba").append(html);
+
+                var tableRef = document.getElementById('tablePreview').getElementsByTagName('tbody')[0];
+                var newRow = tableRef.insertRow(tableRef.rows.length);
+                newRow.innerHTML = html;
+            }
+        });
+    }).fail(function (data) {
+        alert("falló");
+    });
+}
+
 function editar(idTratamiento)
 {
     console.log("Editar: id " + idTratamiento);

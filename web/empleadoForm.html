@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Tratamiento</title>
+        <title>Empleados</title>
         <!-- MDB icon -->
         <link rel="icon" href="lotus.png" type="image/x-icon">
         <!-- Font Awesome -->
@@ -24,7 +24,7 @@
             <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <p>Tratamientos</p>
+                        <p>Empleados</p>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
@@ -38,22 +38,68 @@
         <div class="container-fluid m-4">
             <form onsubmit="manejarSubmit()">
                 <input type="hidden" id="idTratamiento">
+                <h1>Persona</h1>
                 <div class="form-group">
                     <label for="nombre">Nombre</label>
-                    <input type="text" class="form-control" id="nombre" aria-describedby="nombreHelp" placeholder="Exfoliación facial">
-                    <small id="nombreHelp" class="form-text text-muted">Nombre del tratamiento.</small>
+                    <input type="text" class="form-control" id="nombre" aria-describedby="nombreHelp" placeholder="Nombre">
+                    <small id="nombreHelp" class="form-text text-muted">Nombre del empleado.</small>
                 </div>
                 <div class="form-group">
-                    <label for="descripcion">Descripción</label>
-                    <input type="text" class="form-control" id="descripcion" aria-describedby="descripcionHelp" placeholder="liminación de las células muertas de la piel facial">
-                    <small id="descripcionHelp" class="form-text text-muted">Explicación del tratamiento</small>
+                    <label for="apellidoPaterno">Apellido Paterno</label>
+                    <input type="text" class="form-control" id="apellidoPaterno" aria-describedby="apellidoPaternoHelp" placeholder="Apellido Paterno">
+                    <small id="apellidoPaternoHelp" class="form-text text-muted">Apellido paterno del empleado.</small>
                 </div>
                 <div class="form-group">
-                    <label for="costo">Costo</label>
-                    <input type="text" class="form-control" id="costo" aria-describedby="costoHelp" placeholder="123.45">
-                    <small id="descripcionHelp" class="form-text text-muted">Costo del producto.</small>
+                    <label for="apellidoMaterno">Apellido Paterno</label>
+                    <input type="text" class="form-control" id="apellidoMaterno" aria-describedby="apellidoMaternoHelp" placeholder="Apellido Materno">
+                    <small id="apellidoMaternoHelp" class="form-text text-muted">Apellido materno del empleado.</small>
                 </div>
-
+                <div class="form-group">
+                    <label for="genero">Genero</label>
+                    <input type="text" class="form-control" id="genero" aria-describedby="generoHelp" placeholder="M (Masculino) o F (Femenino)">
+                    <small id="generoHelp" class="form-text text-muted">Genero del empleado.</small>
+                </div>
+                <div class="form-group">
+                    <label for="domicilio">Domicilio</label>
+                    <input type="text" class="form-control" id="domicilio" aria-describedby="domicilioHelp" placeholder="Domicilio">
+                    <small id="domicilioHelp" class="form-text text-muted">Domicilio del empleado.</small>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Telefono</label>
+                    <input type="text" class="form-control" id="telefono" aria-describedby="telefonoHelp" placeholder="(477) ...">
+                    <small id="telefonoHelp" class="form-text text-muted">Telefono del empleado.</small>
+                </div>
+                <div class="form-group">
+                    <label for="rfc">RFC</label>
+                    <input type="text" class="form-control" id="rfc" aria-describedby="rfcHelp" placeholder="RFC">
+                    <small id="rfcHelp" class="form-text text-muted">RFC del empleado</small>
+                </div>
+                <h1>Empleado</h1>
+                <div class="form-group">
+                    <label for="puesto">Puesto</label>
+                    <select class="form-control" id="puesto" aria-describedby="puestoHelp">
+                        <option selected disabled hidden>Selecciona una opcion de la lista</option>
+                        <option value="Gerente">Gerente</option>
+                        <option value="Recepcionista">Recepcionista</option>
+                        <option value="Tecnico">Tecnico</option>
+                    </select>
+                    <small id="puestoHelp" class="form-text text-muted">Puesto del empleado.</small>
+                </div>
+                <div class="form-group">
+                    <label for="foto">Fotografia</label>
+                    <input type="file" class="form-control-file" id="foto" aria-describedby="fotoHelp">
+                    <small id="fotoHelp" class="form-text text-muted">Fotografia del empleado.</small>
+                </div>
+                <h1>Usuario</h1>
+                <div class="form-group">
+                    <label for="rol">Rol</label>
+                    <select class="form-control" id="rol" aria-describedby="rolHelp">
+                        <option selected disabled hidden>Selecciona una opcion de la lista</option>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Empleado">Empleado</option>
+                    </select>
+                    <small id="rolHelp" class="form-text text-muted">Rol del empleado.</small>
+                </div>
                 <button type="button" class="btn btn-primary" onclick="realizarSubmit()" id="submit">Realizar</button>
             </form>
         </div>
@@ -72,7 +118,7 @@
         <!-- Your custom scripts (optional) -->
         <script type="text/javascript">
                     $(document).ready(function () {
-                        
+
                         verificarSesion();
 
                         // Verifica si se quiere editar, en vez de dar de alta
@@ -81,19 +127,20 @@
 
                     function verificarEditar() {
                         var token = localStorage.getItem("token");
-                        var idTratamiento = localStorage.getItem("idTratamiento");
+                        var numeroEmpleado = localStorage.getItem("numeroEmpleado");
 
                         console.log(token);
-                        console.log(idTratamiento);
+                        console.log(numeroEmpleado);
 
-                        if (idTratamiento != null)
+                        if (numeroEmpleado != null)
                         {
                             $.ajax({
                                 type: 'POST',
-                                url: 'api/tratamiento/unique',
+                                url: 'http://localhost:4040/myspa_rest/api/empleado/',
+//                                url: 'http://localhost:8080/myspa_rest/api/empleado/buscar',
                                 data: {
-                                    idTratamiento: idTratamiento,
-                                    token: token
+                                    token: token,
+                                    numeroEmpleado: numeroEmpleado
                                 }
                             }).done(function (data) {
                                 if (data.error != null)
@@ -104,50 +151,105 @@
 
                                 console.log(data);
 
-                                $("#idTratamiento").val(data.idTratamiento);
                                 $("#nombre").val(data.nombre);
-                                $("#descripcion").val(data.descripcion);
-                                $("#costo").val(data.costo);
+                                $("#apellidoPaterno").val(data.apellidoPaterno);
+                                $("#apellidoMaterno").val(data.apellidoMaterno);
+                                $("#genero").val(data.genero);
+                                $("#domicilio").val(data.domicilio);
+                                $("#telefono").val(data.telefono);
+                                $("#rfc").val(data.rfc);
+                                $("#puesto").val(data.puesto);
+                                $("#foto").val(data.foto);
+                                $("#rol").val(data.rol);
 
                             }).fail(function (data) {
                                 alert("falló");
                             });
+
                         }
                     } // Termina function de verificación editar
 
                     function realizarSubmit() {
                         console.log("realizar submit");
-                        var idTratamiento = document.getElementById("idTratamiento").value;
+                        var numeroEmpleado = document.getElementById("numeroEmpleado").value;
                         var nombre = document.getElementById("nombre").value;
-                        var descripcion = document.getElementById("descripcion").value;
-                        var costo = document.getElementById("costo").value;
+                        var apellidoPaterno = document.getElementById("apellidoPaterno").value;
+                        var apellidoMaterno = document.getElementById("apellidoMaterno").value;
+                        var genero = document.getElementById("genero").value;
+                        var domicilio = document.getElementById("domicilio").value;
+                        var telefono = document.getElementById("telefono").value;
+                        var rfc = document.getElementById("rfc").value;
+                        var puesto = document.getElementById("puesto").value;
+                        var foto = document.getElementById("foto").value;
+                        var rol = document.getElementById("rol").value;
 
                         var token = localStorage.getItem("token");
 
                         var url;
                         var verbo;
+                        var data = "\"token\":\"" + token + "\",";
 
-                        if (localStorage.getItem("idTratamiento") != null)
+                        if (localStorage.getItem("numeroEmpleado") != null)
                         {
-                            url = "api/tratamiento/modificar";
+                            url = "http://localhost:4040/myspa_rest/api/empleado/actualizar";
+//                            url = "http://localhost:8080/myspa_rest/api/empleado/actualizar";
                             verbo = "PUT";
+
+                            data += "\"idEmpleado\":\"\",";
+                            data += "\"numeroEmpleado:\":\"" + numeroEmpleado + "\",";
+                            data += "\"puesto\":\"" + puesto + "\",";
+                            data += "\"estatus\":\"" + 1 + "\",";
+                            data += "\"foto\":\"" + foto + "\",";
+                            data += "\"rutaFoto\":\"\",";
+
+                            data += "\"idUsuario\":\"\",";
+                            data += "\"nombreUsuario\":\"\",";
+                            data += "\"contrasenia\":\"\",";
+                            data += "\"rol\":\"" + rol + "\",";
+
+                            data += "\"idPersona\":\"\",";
+                            data += "\"nombre\":\"" + nombre + "\",";
+                            data += "\"apellidoPaterno\":\"" + apellidoPaterno + "\",";
+                            data += "\"apellidoMaterno\":\"" + apellidoMaterno + "\",";
+                            data += "\"genero\":\"" + genero + "\",";
+                            data += "\"domicilio\":\"" + domicilio + "\",";
+                            data += "\"telefono\":\"" + telefono + "\",";
+                            data += "\"rfc\":\"" + rfc + "\"";
+
+
                         } else {
-                            url = "api/tratamiento/registrar";
+                            url = "http://localhost:4040/myspa_rest/api/empleado/insertar";
+//                            url = "http://localhost:8080/myspa_rest/api/empleado/insertar";
                             verbo = "POST";
+
+                            data += "\"numeroEmpleado:\":\"" + numeroEmpleado + "\",";
+                            data += "\"puesto\":\"" + puesto + "\",";
+                            data += "\"estatus\":\"" + 1 + "\",";
+                            data += "\"foto\":\"" + foto + "\",";
+                            data += "\"rutaFoto\":\"\",";
+
+                            data += "\"nombreUsuario\":\"\",";
+                            data += "\"contrasenia\":\"\",";
+                            data += "\"rol\":\"" + rol + "\",";
+
+                            data += "\"nombre\":\"" + nombre + "\",";
+                            data += "\"apellidoPaterno\":\"" + apellidoPaterno + "\",";
+                            data += "\"apellidoMaterno\":\"" + apellidoMaterno + "\",";
+                            data += "\"genero\":\"" + genero + "\",";
+                            data += "\"domicilio\":\"" + domicilio + "\",";
+                            data += "\"telefono\":\"" + telefono + "\",";
+                            data += "\"rfc\":\"" + rfc + "\"";
                         }
 
                         console.log("verbo: " + verbo);
                         console.log("url " + url);
 
+
                         $.ajax({
                             type: verbo,
                             url: url,
                             data: {
-                                idTratamiento: idTratamiento,
-                                nombre: nombre,
-                                descripcion: descripcion,
-                                costo: costo,
-                                token: token
+                                data
                             }
                         }).done(function (data) {
                             if (data.error != null)
@@ -159,8 +261,8 @@
                             console.log(data);
 
                             alert("Acción realizada con exito");
-                            localStorage.removeItem("idTratamiento");
-                            window.location.replace("tratamiento.html");
+                            localStorage.removeItem("numeroEmpleado");
+                            window.location.replace("empleado.html");
 
                         }).fail(function (data) {
                             alert("falló");

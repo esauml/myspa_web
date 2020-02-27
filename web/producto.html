@@ -44,11 +44,9 @@
                 <!--Table head-->
                 <thead>
                     <tr>
-                        <th>#</th>
                         <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Rol</th>
-                        <th>Acciones</th>
+                        <th>Marca</th>
+                        <th>Precio</th>
                     </tr>
                 </thead>
                 <!--Table head-->
@@ -73,12 +71,61 @@
         <script type="text/javascript" src="js/common.js"></script>
         <!-- Your custom scripts (optional) -->
         <script type="text/javascript">
-            $(document).ready(function () {
-                localStorage.setItem("token", "1");
-                // verificarSesion();
+                $(document).ready(function () {
+                    // localStorage.setItem("token", "1");
+                    // 
+                    // verificarSesion();
 
-                listar();
-            });
+                    listarProducto()();
+                });
+
+                function listarProducto()
+                {
+                    // var token = localStorage.getItem("token");
+                    // console.log("token: " + token);
+
+                    $.ajax({
+                        type: 'GET',
+                        url: 'http://localhost:18835/myspa_rest/api/producto/getAll',
+                    }).done(function (data)
+                    {
+                        if (data.error != null)
+                        {
+                            alert("Problema de autenticación \n" + data.error);
+                            return;
+                        }
+
+                        // console.log(data);
+
+                        // Eliminar las filas que ya estan en la tabla
+                        $('#tablePreview tbody tr').slice(1).remove();
+
+                        $.each(data, function (i, item) {
+
+                            var html;
+                            // console.log("each " + i);
+                            // console.log(item);
+
+                            //if (item.estatus != 0) {
+                            if (true) {
+                                html = "<tr>" +
+                                        "<th scope=\"row\">" + item.nombre + "</th>" +
+                                        "<td>" + item.marca + "</td>" +
+                                        "<td>" + item.precioUso + "</td>" +
+                                        "</tr>";
+
+                                //$("#prueba").append(html);
+                                // console.log(data);
+
+                                var tableRef = document.getElementById('tablePreview').getElementsByTagName('tbody')[0];
+                                var newRow = tableRef.insertRow(tableRef.rows.length);
+                                newRow.innerHTML = html;
+                            }
+                        });
+                    }).fail(function (data) {
+                        console.log("falló el AJAX");
+                    });
+                }
         </script>
 
     </body>

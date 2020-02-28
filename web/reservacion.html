@@ -49,6 +49,7 @@
                         <th>Fecha</th>
                         <th>Hora incio</th>
                         <th>Hora fin</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <!--Table head-->
@@ -60,6 +61,36 @@
             <!--Table-->
         </div>
         <!-- End Project -->
+
+
+        <!-- Modal para Formulario -->
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Launch demo modal
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para Formulario -->
 
         <!-- jQuery -->
         <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -106,8 +137,25 @@
                         $.each(data, function (i, item) {
 
                             // guarda el datetime que arrojó el REST 
-                            var dateTimeInicio;
-                            var dateTimeFin;
+                            var fechaR = 1;
+                            var horaI = 1;
+                            var horaF = 1;
+
+                            if (item.fechaHoraInicio) {
+                                // var fechaJSON = JSON.parse(item.fechaHoraInicio);
+                                var fechaJSON = item.fechaHoraInicio;
+                                var fecha = new Date(fechaJSON);
+
+                                var mes = fecha.getMonth() + 1;
+                                var dia = fecha.getDate();
+                                var anio = fecha.getFullYear();
+
+                                fechaR = dia + "/" + mes + "/" + anio;
+                                // horaI = fecha.getHours()+":"+fecha.getMinutes();
+                                horaI = item.fechaHoraInicio.substring(11, 19);
+                            }
+
+                            horaF = item.fechaHoraFin.substring(11, 19);
 
                             var html;
                             // console.log("each " + i);
@@ -118,9 +166,10 @@
                                 html = "<tr>" +
                                         "<th scope=\"row\">" + item.sala.nombre + "</th>" +
                                         "<td>" + item.cliente.nombre + "</td>" +
-                                        "<td>" + dateTimeInicio.fecha + "</td>" +
-                                        "<td>" + dateTimeInicio.hora + "</td>" +
-                                        "<td>" + dateTimeFin.hora + "</td>" +
+                                        "<td>" + fechaR + "</td>" +
+                                        "<td>" + horaI + "</td>" +
+                                        "<td>" + horaF + "</td>" +
+                                        "<td><a href='#' style='color: blue;'>Atender</a></td>" +
                                         "</tr>";
 
                                 //$("#prueba").append(html);

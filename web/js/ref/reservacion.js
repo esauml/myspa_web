@@ -452,6 +452,7 @@ function atenderReservacion(posicionReservacionJSON) {
  */
 function agregarProductoTratamiento(indiceTratamiento) {
     var clase = ["green-text", "amber-text"];
+    // 
 }
 
 /*******************************************************

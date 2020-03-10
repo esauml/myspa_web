@@ -15,6 +15,8 @@
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <!-- Material Design Bootstrap -->
         <link rel="stylesheet" href="css/mdb.min.css">
+        <!-- Select2 -->
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
         <!-- Your custom styles (optional) -->
         <link rel="stylesheet" href="css/style.css">
     </head>
@@ -54,7 +56,7 @@
         </div>
         <!-- End Project -->
 
-        <!-- Modal -->
+        <!-- Modal Reservación -->
         <div class="modal fade" id="formularioReservacionModal" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -66,12 +68,18 @@
                     </div>
                     <div class="modal-body ml-2">
                         <form id="formReservacion">
+                            <label class="mdb-main-label mr-1">Sucursal</label>
+                            <select id="sucursalReservacionListado" name="sucursalReservacionListado" required class="mdb-select md-form">
+                                <option value="" disabled selected>-- Nombre --</option>
+                            </select>
+                            <br>
+
                             <label class="mdb-main-label mr-1">Cliente:</label>
                             <select id="clienteReservacionListado" name="clienteReservacionListado" required class="mdb-select md-form">
                                 <option value="" disabled selected>-- Nombre --</option>
                             </select>
                             <br>
-                            
+
                             <label class="mdb-main-label mr-1 ">Sala:</label>
                             <select id="salaReservacionListado" name="salaReservacionListado" required class="mdb-select md-form">
                                 <option value="" disabled selected>-- Nombre --</option>
@@ -86,12 +94,97 @@
                             <select id="horarioReservacionListado" name="horarioReservacionListado" required class="mdb-select md-form">
                                 <option value="" disabled selected>-- Escoger --</option>
                             </select>
-                            
+
                         </form>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
                         <button type="button" id="btnCerrarModalReservacioni" form="formReservacion" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button>
                         <button type="submit" form="formReservacion" class="btn btn-primary btn-sm">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+
+        <!-- Modal AtenderReservación -->
+        <div class="modal fade" id="formAtenderModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h5 class="modal-title w-100 font-weight-bold">Atender Reservacion</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body ml-2">
+                        <form id="formAtender">
+                            <input type="hidden" id="idReservacionAtender" name="idReservacionAtender">
+                            <hr>
+                            <p>
+                                <label class="text-dark mr-1">FECHA</label><label id="fechaAtender"></label>
+                            </p>
+
+                            <hr>
+                            <p>
+                                <label class="text-dark mr-1">INICIO</label><label id="horaInicioAtender"></label>
+                            </p>
+
+                            <hr>
+                            <p>
+                                <label class="text-dark mr-1">FIN</label><label id="horaFinAtender"></label>
+                            </p>
+
+                            <hr>
+                            <p>
+                                <input type="hidden" id="idClienteAtender">
+                                <label class="text-dark mr-1">CLIENTE</label><label id="clienteAtender"></label>
+                            </p>
+
+                            <hr>
+                            <p>
+                                <input type="hidden" id="idSalaAtender">
+                                <label class="text-dark mr-1">SALA</label><label id="salaAtender"></label>
+                            </p>
+
+                            <label class="mdb-main-label mr-2">Empleado</label>
+                            <select id="empleadoAtender" name="empleadoAtender" required class="mdb-select md-form">
+                                <option value="" disabled selected>-- Escoger --</option>
+                            </select>
+                            <br>
+                            <br>
+
+                            <label class="mdb-main-label mr-2">Agregar tratamiento</label>
+                            <select id="tratamientosListadoAtender" name="tratamientosListadoAtender" class="mdb-select md-form">
+                                <option value="" disabled selected>-- Escoger --</option>
+                            </select>
+                            <br>
+
+                            <label class="mdb-main-label mr-2">Agregar producto</label>
+                            <select id="productosListadoAtender" name="productosListadoAtender" disabled class="mdb-select md-form">
+                                <option value="" disabled selected>-- Escoger --</option>
+                            </select>
+
+                            <!-- Tabla -->
+                            <div class="table-responsive text-nowrap table-sm table-hover">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Nombre</th>
+                                            <th scope="col">Costo</th>
+                                            <th scope="col">tratamientos</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tratamientosAgregadosAtender">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- Tabla -->
+
+                        </form>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="button" id="btnCerrarModalAtender" form="formAtender" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" form="formAtender" class="btn btn-primary btn-sm">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -106,6 +199,8 @@
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <!-- MDB core JavaScript -->
         <script type="text/javascript" src="js/mdb.min.js"></script>
+        <!-- Select2 -->
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
         <!-- Scripts del sitio -->
         <script type="text/javascript" src="js/common.js"></script>
         <!-- Scripts for module reservacion -->
